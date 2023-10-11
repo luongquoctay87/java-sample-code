@@ -1,0 +1,10 @@
+server:
+  port: 4953
+spring:
+  application:
+    name: CLOUD-GATEWAY
+  profiles:
+    active: @spring.profiles.active@
+logging:
+  level:
+    root: INFO

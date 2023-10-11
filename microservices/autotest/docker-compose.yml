@@ -1,0 +1,17 @@
+version: '3.9'
+
+services:
+
+  account:
+    container_name: app1
+    build:
+      context: ./app1
+      dockerfile: Dockerfile
+    ports:
+      - '8080:8080'
+    networks:
+      - default
+
+networks:
+  default:
+    name: autotest-network

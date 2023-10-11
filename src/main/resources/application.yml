@@ -1,0 +1,13 @@
+server:
+  port: 8181
+spring:
+  application:
+    name: JAVA-SAMPLE-CODE
+  profiles:
+    active: @spring.profiles.active@
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+logging:
+  level:
+    root: INFO

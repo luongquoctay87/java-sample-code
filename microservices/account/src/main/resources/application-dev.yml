@@ -1,0 +1,21 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+openapi:
+  service:
+    api-docs: account-service
+    server: http://localhost:7750
+    title: Account Service
+    version: 1.0
+
+website:
+  domainName: http://localhost:8500
+

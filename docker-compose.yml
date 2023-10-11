@@ -1,0 +1,15 @@
+version: '3.9'
+
+services:
+  sample-service:
+    container_name: sample-container
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8181:8181'
+    networks:
+      - default
+networks:
+  default:
+    name: sample-network

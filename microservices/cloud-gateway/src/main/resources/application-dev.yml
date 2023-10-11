@@ -1,0 +1,37 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+  cloud:
+    gateway:
+      routes:
+        - id: authentication-service
+          uri: http://localhost:7749
+          predicates:
+            - Path=/authentication/*, /v3/api-docs/authentication-service
+          filters:
+            - RewritePath=/authentication/(?<segment>.*), /$\{segment}
+
+        - id: account-service
+          uri: http://localhost:7750
+          predicates:
+            - Path=/accounts/**, /v3/api-docs/account-service
+          filters:
+            - RewritePath=/accounts/(?<segment>.*), /$\{segment}
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      - url: /v3/api-docs
+        name: API Gateway Service
+        primaryName: API Gateway Service
+      - url: /v3/api-docs/authentication-service
+        name: Authentication Service
+        primaryName: Authentication Service
+      - url: /v3/api-docs/account-service
+        name: Account Service
+        primaryName: Account Service

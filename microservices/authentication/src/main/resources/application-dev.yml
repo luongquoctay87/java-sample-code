@@ -1,0 +1,20 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+openapi:
+  service:
+    api-docs: authentication-service
+    server: http://localhost:7749
+    title: Authentication Service
+    version: 1.0
+
+website:
+  domainName: http://localhost:8500

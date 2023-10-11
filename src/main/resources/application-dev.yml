@@ -1,0 +1,40 @@
+--- # DEVELOPMENT PROFILE
+spring:
+  config:
+    activate:
+      on-profile: dev
+  kafka:
+    bootstrap-servers: ${KAFKA_SERVER}
+
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    enabled: true
+
+openapi:
+  service:
+    api-docs: sample
+    server: http://localhost:8181
+    title: Sample Service
+    version: 1.0
+
+amazon:
+  dynamodb:
+    endpoint: ${AMAZON_DYNAMODB_ENDPOINT}
+    region: ${AMAZON_DYNAMODB_REGION}
+    accessKey: ${AMAZON_DYNAMODB_ACCESS_KEY}
+    secretKey: ${AMAZON_DYNAMODB_SECRET_KEY}
+  s3:
+    region: ${AMAZON_S3_REGION}
+    accessKey: ${AMAZON_S3_ACCESS_KEY}
+    secretKey: ${AMAZON_S3_SECRET_KEY}
+    bucket: ${AMAZON_S3_BUCKET}
+  sns:
+    region: ${AMAZON_SNS_REGION}
+    accessKey: ${AMAZON_SNS_ACCESS_KEY}
+    secretKey: ${AMAZON_SNS_SECRET_KEY}
+
+redis:
+  host: ${REDIS_HOST}
+  port: ${REDIS_PORT}

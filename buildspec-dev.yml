@@ -1,0 +1,35 @@
+version: 0.2
+
+
+phases:
+  pre_build:
+    commands:
+      - mvn clean package -P develop
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI={number}.dkr.ecr.eu-west-1.amazonaws.com/java-sample-code-ecr
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - REPOSITORY_URI_CONFIG=" "$REPOSITORY_URI
+  build:
+    commands:
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - printf '[{"name":"java-sample-code","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - cat imagedefinitions.json
+      - git config --global user.email "luongquoctay87@gmail.com"
+      - git config --global user.name "TayLQ"
+      - git clone https://github.com/luongquoctay87/helm-charts.git
+      - cd helm-charts/java-sample-code
+      - git checkout develop
+      - sed -i "s|tag:.*|tag:$IMAGE_TAG|g" values.yaml
+      - git add .
+      - git commit -m "change image tag"
+      - git push origin develop
+
+artifacts:
+  files:
+    - imagedefinitions.json
+    - dist/java-sample-code.jar
