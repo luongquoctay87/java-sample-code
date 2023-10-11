@@ -147,6 +147,7 @@ spring:
 - ***Reference source:***
   - [CORS support in Spring Framework](https://spring.io/blog/2015/06/08/cors-support-in-spring-framework)
   - [CORS Configuration](https://cloud.spring.io/spring-cloud-gateway/multi/multi__cors_configuration.html)
+  - [Spring Boot CORS Configuration Examples](https://howtodoinjava.com/spring-boot2/spring-cors-configuration/)
 
 
 

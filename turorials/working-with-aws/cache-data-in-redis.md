@@ -167,3 +167,7 @@ public record TokenService(TokenRepository tokenRepository) {
     }
 }
 ```
+
+***Reference sources:***
+ - [Validation in Spring Boot](https://medium.com/@techisbeautiful/mastering-data-validation-in-spring-boot-best-practices-and-expert-tips-for-robust-and-secure-ba24dd79bc0a)
+ - [Validation with Spring Boot - the Complete Guide](https://reflectoring.io/bean-validation-with-spring-boot/)

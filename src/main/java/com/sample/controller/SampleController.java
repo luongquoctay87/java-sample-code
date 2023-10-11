@@ -6,9 +6,6 @@ import com.sample.controller.response.FailureResponse;
 import com.sample.controller.response.LoadingPageResponse;
 import com.sample.controller.response.SuccessResponse;
 import com.sample.dto.SampleDTO;
-import com.sample.exception.DuplicatedException;
-import com.sample.exception.NotAcceptableException;
-import com.sample.exception.NotFoundException;
 import com.sample.model.SampleUser;
 import com.sample.service.SampleUserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -42,12 +39,6 @@ public record SampleController(SampleUserService userService) {
 
             String id = userService.saveSampleUser(request);
             return new SuccessResponse(CREATED, Translator.toLocale("msg-user-add-success"), id);
-        } catch (NotAcceptableException e) {
-            log.error("Invalid parameter, message={}", e.getMessage(), e);
-            return new FailureResponse(NOT_ACCEPTABLE, e.getMessage());
-        } catch (DuplicatedException e) {
-            log.error("Invalid parameter, message={}", e.getMessage(), e);
-            return new FailureResponse(CONFLICT, e.getMessage());
         } catch (Exception e) {
             log.error("Add new user was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, Translator.toLocale("msg-user-add-failure"));
@@ -70,12 +61,6 @@ public record SampleController(SampleUserService userService) {
 
             userService.updateSampleUser(sampleUser, request);
             return new SuccessResponse(ACCEPTED, Translator.toLocale("msg-user-update-success"));
-        } catch (DuplicatedException e) {
-            log.error("Invalid parameter, message={}", e.getMessage(), e);
-            return new FailureResponse(CONFLICT, e.getMessage());
-        } catch (NotFoundException e) {
-            log.error("Not found, message={}", e.getMessage(), e);
-            return new FailureResponse(NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             log.error("Update user was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, Translator.toLocale("msg-user-update-failure"));
@@ -89,9 +74,6 @@ public record SampleController(SampleUserService userService) {
         try {
             userService.deactivateSampleUser(hashKey, rangeKey);
             return new SuccessResponse(NO_CONTENT, Translator.toLocale("msg-user-deactivate-success"));
-        } catch (NotFoundException e) {
-            log.error("Not found, message={}", e.getMessage(), e);
-            return new FailureResponse(NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             log.error("Deactivate user was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, Translator.toLocale("msg-user-deactivate-failure"));
@@ -105,9 +87,6 @@ public record SampleController(SampleUserService userService) {
         try {
             userService.deleteSampleUser(hashKey, rangeKey);
             return new SuccessResponse(RESET_CONTENT, Translator.toLocale("msg-user-delete-success"));
-        } catch (NotFoundException e) {
-            log.error("Not found, message={}", e.getMessage(), e);
-            return new FailureResponse(NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             log.error("Delete user was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, Translator.toLocale("msg-user-delete-failure"));
@@ -131,9 +110,6 @@ public record SampleController(SampleUserService userService) {
                     .updatedAt(sampleUser.getUpdatedAt().toString())
                     .build();
             return new SuccessResponse(OK, "user", response);
-        } catch (NotFoundException e) {
-            log.error("Not found, message={}", e.getMessage(), e);
-            return new FailureResponse(NOT_FOUND, e.getMessage());
         } catch (Exception e) {
             log.error("Get user was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, "Get user was failure");

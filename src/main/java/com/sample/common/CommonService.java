@@ -1,6 +1,5 @@
 package com.sample.common;
 
-import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sns.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
@@ -9,7 +8,6 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.sample.dto.CountryDTO;
-import com.sample.exception.NotFoundException;
 import com.sample.model.Country;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;

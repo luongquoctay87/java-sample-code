@@ -4,9 +4,8 @@ import com.sample.config.Translator;
 import com.sample.controller.request.MobileSignUpRequest;
 import com.sample.controller.request.SampleUserRequest;
 import com.sample.controller.response.LoadingPageResponse;
-import com.sample.exception.DuplicatedException;
-import com.sample.exception.NotAcceptableException;
-import com.sample.exception.NotFoundException;
+import com.sample.exception.InvalidDataException;
+import com.sample.exception.ResourceNotFoundException;
 import com.sample.model.SampleUser;
 import com.sample.repository.SampleUserRepository;
 import com.sample.utils.UserStatus;
@@ -48,9 +47,9 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
                 .build();
 
         SampleUser response = repository.save(object);
-        if (response.getEmail() != null) {
+        /*if (response.getEmail() != null) {
             kafkaTemplate.send(WELCOME_TOPIC, response.getEmail());
-        }
+        }*/
 
         return response.getRangeKey();
     }
@@ -126,7 +125,7 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
         log.info("Deactivating sample user ...");
 
         SampleUser object = repository.findByCompositeKey(hashKey, rangeKey);
-        if (object == null) throw new NotFoundException("Sample user not found");
+        if (object == null) throw new ResourceNotFoundException("Sample user not found");
         object.setStatus(UserStatus.INACTIVE);
         repository.save(object);
     }
@@ -153,7 +152,7 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
         log.info("Getting sample user ...");
 
         SampleUser object = repository.findByCompositeKey(hashKey, rangeKey);
-        if (object == null) throw new NotFoundException("Sample user not found");
+        if (object == null) throw new ResourceNotFoundException("Sample user not found");
         return object;
     }
 
@@ -186,12 +185,12 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
     public void isPhoneValid(String phone) {
         log.info("Validating phone number={}", phone);
 
-        if (!phone.matches(PHONE)) throw new NotAcceptableException("Phone number invalid format");
+        if (!phone.matches(PHONE)) throw new InvalidDataException("Phone number invalid format");
 
         SampleUser object = repository.findByPhone(phone);
         if (object != null) {
             log.warn("Phone number={} exists", phone);
-            throw new DuplicatedException(Translator.toLocale("msg-user-phone-invalid"));
+            throw new InvalidDataException(Translator.toLocale("msg-user-phone-invalid"));
         }
     }
 
@@ -206,7 +205,7 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
         SampleUser object = repository.findByEmail(email);
         if (object != null) {
             log.warn("Email address={} exists", email);
-            throw new DuplicatedException(Translator.toLocale("msg-user-email-invalid"));
+            throw new InvalidDataException(Translator.toLocale("msg-user-email-invalid"));
         }
     }
 }

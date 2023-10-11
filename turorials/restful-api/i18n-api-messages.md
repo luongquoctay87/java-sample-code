@@ -96,8 +96,6 @@ curl --location 'http://localhost:8181/samples/welcome' \
 ```
 
 ---
-***Source code:*** [GitHub](https://github.com/luongquoctay87/java-sample-code/tree/working-with-rest-api)
-
 ***Reference sources:***
  - [Internationalization with Spring Boot REST](https://howtodoinjava.com/spring-boot2/rest/i18n-internationalization/)
  - [Spring Boot REST Internationalization](https://ihorkosandiak.medium.com/spring-boot-rest-internationalization-9ab3fce2489)
