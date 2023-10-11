@@ -88,8 +88,8 @@
         </dependency>
         <dependency>
             <groupId>com.amazonaws</groupId>
-            <artifactId>aws-java-sdk</artifactId>
-            <version>1.11.163</version>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>1.12.484</version>
         </dependency>
         <dependency>
             <groupId>javax.xml.bind</groupId>

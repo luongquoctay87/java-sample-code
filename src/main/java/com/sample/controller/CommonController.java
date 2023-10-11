@@ -5,7 +5,6 @@ import com.sample.common.MailService;
 import com.sample.controller.response.FailureResponse;
 import com.sample.controller.response.SuccessResponse;
 import com.sample.dto.CountryDTO;
-import com.sample.exception.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -38,7 +37,7 @@ public record CommonController(CommonService commonService, MailService mailServ
         try {
             List<CountryDTO> countryList = commonService.getCountryList();
             return new SuccessResponse(OK, "countries", countryList);
-        } catch (NotFoundException e) {
+        } catch (Exception e) {
             log.error("Get country list was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, e.getMessage());
         }
@@ -51,7 +50,7 @@ public record CommonController(CommonService commonService, MailService mailServ
         try {
             CountryDTO response = commonService.getCountryByCode(countryCode);
             return new SuccessResponse(OK, "country", response);
-        } catch (NotFoundException e) {
+        } catch (Exception e) {
             log.error("Get country was failure, message={}", e.getMessage(), e);
             return new FailureResponse(BAD_REQUEST, e.getMessage());
         }

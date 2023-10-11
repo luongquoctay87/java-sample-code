@@ -489,4 +489,4 @@ __2.4 Create a controller__
 ```
 
 ---
-***Source code:*** [GitHub](https://github.com/luongquoctay87/java-sample-code/tree/working-with-rest-api)
+***Source code:*** [GitHub](https://github.com/luongquoctay87/java-sample-code)

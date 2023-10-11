@@ -1,7 +1,5 @@
 package com.sample.common;
 
-import com.amazonaws.services.sns.AmazonSNSClient;
-import com.amazonaws.services.sns.model.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
@@ -9,7 +7,8 @@ import com.google.zxing.common.BitMatrix;
 import com.google.zxing.oned.EAN13Writer;
 import com.google.zxing.qrcode.QRCodeWriter;
 import com.sample.dto.CountryDTO;
-import com.sample.exception.NotFoundException;
+import com.sample.exception.InvalidDataException;
+import com.sample.exception.ResourceNotFoundException;
 import com.sample.model.Country;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
@@ -78,7 +77,7 @@ public class CommonService {
                     .build();
         }
 
-        throw new NotFoundException(String.format("Not found country with countryCode={}", code));
+        throw new ResourceNotFoundException(String.format("Not found country with countryCode={}", code));
     }
 
     /**
@@ -104,7 +103,7 @@ public class CommonService {
             return Arrays.asList(mapper.readValue(countries, Country[].class));
         } catch (Exception e) {
             log.error("Can not read json file, message={}", e.getMessage(), e);
-            throw new NotFoundException("Get country list was failure");
+            throw new ResourceNotFoundException("Get country list was failure");
         }
     }
 
@@ -221,7 +220,7 @@ public class CommonService {
         if (!file.isEmpty()) {
             return s3Client.putObject(bucketName, file, true);
         } else {
-            throw new IllegalArgumentException("File can not blank");
+            throw new InvalidDataException("File can not blank");
         }
     }
 }
