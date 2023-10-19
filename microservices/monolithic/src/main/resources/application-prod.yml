@@ -1,0 +1,18 @@
+spring:
+  config:
+    activate:
+      on-profile: prod
+
+server:
+  servlet:
+    contextPath: /api/v1
+
+springdoc:
+  api-docs:
+    enabled: false
+  swagger-ui:
+    enabled: false
+
+website:
+  domainName: http://{ip}:{port}
+
