@@ -47,9 +47,9 @@ public record SampleUserService(SampleUserRepository repository, KafkaTemplate<S
                 .build();
 
         SampleUser response = repository.save(object);
-        /*if (response.getEmail() != null) {
+        if (response.getEmail() != null) {
             kafkaTemplate.send(WELCOME_TOPIC, response.getEmail());
-        }*/
+        }
 
         return response.getRangeKey();
     }
