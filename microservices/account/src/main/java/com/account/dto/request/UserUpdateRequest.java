@@ -1,10 +1,9 @@
 package com.account.dto.request;
 
-import com.account.dto.Address;
+import com.account.dto.AddressDTO;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Data
@@ -16,5 +15,5 @@ public class UserUpdateRequest implements Serializable {
     private String phone;
     private String email;
     private String password;
-    private Address address;
+    private AddressDTO addressDTO;
 }

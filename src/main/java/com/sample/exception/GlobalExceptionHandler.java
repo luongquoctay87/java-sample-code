@@ -1,6 +1,12 @@
 package com.sample.exception;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.Data;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -11,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -24,6 +31,21 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(BAD_REQUEST)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "400 Response",
+                                    summary = "Handle request body validation",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:26:34.388+00:00\",\n" +
+                                            "  \"status\": 400,\n" +
+                                            "  \"path\": \"/accounts/user\",\n" +
+                                            "  \"error\": \"Invalid request body\",\n" +
+                                            "  \"messages\": \"email is invalid\"\n" +
+                                            "}"
+                            ))})
+    })
     public Error handleValidationException(MethodArgumentNotValidException e, WebRequest request) {
         String eMessage = e.getMessage();
         int start = eMessage.lastIndexOf("[");
@@ -34,7 +56,7 @@ public class GlobalExceptionHandler {
         error.setTimestamp(new Date());
         error.setPath(request.getDescription(false).replace("uri=", ""));
         error.setStatus(BAD_REQUEST.value());
-        error.setError("Invalid parameter");
+        error.setError("Invalid request body");
         error.setMessages(eMessage);
 
         return error;
@@ -42,12 +64,28 @@ public class GlobalExceptionHandler {
 
     /**
      * Handle invalid data
+     *
      * @param e
      * @param request
      * @return
      */
     @ExceptionHandler(InvalidDataException.class)
     @ResponseStatus(BAD_REQUEST)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "400", description = "Bad Request",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "400 Response",
+                                    summary = "Handle request body validation",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:26:34.388+00:00\",\n" +
+                                            "  \"status\": 400,\n" +
+                                            "  \"path\": \"/accounts/user\",\n" +
+                                            "  \"error\": \"Invalid parameter\",\n" +
+                                            "  \"messages\": \"Email is invalid\"\n" +
+                                            "}"
+                            ))})
+    })
     public Error handleValidationException(InvalidDataException e, WebRequest request) {
         Error error = new Error();
         error.setTimestamp(new Date());
@@ -55,6 +93,41 @@ public class GlobalExceptionHandler {
         error.setStatus(BAD_REQUEST.value());
         error.setError("Invalid parameter");
         error.setMessages(e.getMessage());
+
+        return error;
+    }
+
+    /**
+     * Handle forbidden exception
+     *
+     * @param e
+     * @param request
+     * @return error
+     */
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(FORBIDDEN)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "403", description = "Forbidden",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "403 Response",
+                                    summary = "Handle forbidden exception",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:30:11.579+00:00\",\n" +
+                                            "  \"status\": 403,\n" +
+                                            "  \"path\": \"/auth/access-token\",\n" +
+                                            "  \"error\": \"Access denied\",\n" +
+                                            "  \"messages\": \"Username or password wrong, Please try again!\"\n" +
+                                            "}"
+                            ))})
+    })
+    public Error handleBadCredentialsException(BadCredentialsException e, WebRequest request, HttpServletResponse response) {
+        Error error = new Error();
+        error.setTimestamp(new Date());
+        error.setPath(request.getDescription(false).replace("uri=", ""));
+        error.setStatus(FORBIDDEN.value());
+        error.setError("Access denied");
+        error.setMessages("Username or password wrong, Please try again!");
 
         return error;
     }
@@ -68,12 +141,62 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "404", description = "Bad Request",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "404 Response",
+                                    summary = "Handle invalid request",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:07:35.321+00:00\",\n" +
+                                            "  \"status\": 404,\n" +
+                                            "  \"path\": \"/accounts/user/1000000\",\n" +
+                                            "  \"error\": \"Not Found\",\n" +
+                                            "  \"messages\": \"User not found\"\n" +
+                                            "}"
+                            ))})
+    })
     public Error handleResourceNotFoundException(ResourceNotFoundException e, WebRequest request) {
         Error error = new Error();
         error.setTimestamp(new Date());
         error.setPath(request.getDescription(false).replace("uri=", ""));
         error.setStatus(NOT_FOUND.value());
         error.setError(NOT_FOUND.getReasonPhrase());
+        error.setMessages(e.getMessage());
+
+        return error;
+    }
+
+    /**
+     * Handle conflict data exception
+     *
+     * @param e
+     * @param request
+     * @return
+     */
+    @ExceptionHandler(DuplicateKeyException.class)
+    @ResponseStatus(CONFLICT)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "409", description = "Conflict",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "409 Response",
+                                    summary = "Handle conflict data exception ",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:07:35.321+00:00\",\n" +
+                                            "  \"status\": 409,\n" +
+                                            "  \"path\": \"/accounts/user\",\n" +
+                                            "  \"error\": \"Conflict\",\n" +
+                                            "  \"messages\": \"Email has registered, Please try again!\"\n" +
+                                            "}"
+                            ))})
+    })
+    public Error handleDuplicateKeyException(DuplicateKeyException e, WebRequest request) {
+        Error error = new Error();
+        error.setTimestamp(new Date());
+        error.setPath(request.getDescription(false).replace("uri=", ""));
+        error.setStatus(CONFLICT.value());
+        error.setError(CONFLICT.getReasonPhrase());
         error.setMessages(e.getMessage());
 
         return error;
@@ -88,7 +211,22 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
-    public Error handleCommonException(Exception e, WebRequest request, HttpServletResponse response) {
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = {@Content(mediaType = APPLICATION_JSON_VALUE,
+                            examples = @ExampleObject(
+                                    name = "500 Response",
+                                    summary = "Handle exception when internal server error",
+                                    value = "{\n" +
+                                            "  \"timestamp\": \"2023-10-19T06:35:52.333+00:00\",\n" +
+                                            "  \"status\": 500,\n" +
+                                            "  \"path\": \"/accounts/user\",\n" +
+                                            "  \"error\": \"Internal Server Error\",\n" +
+                                            "  \"messages\": \"could not execute statement; SQL [n/a]; constraint [email\\\" of relation \\\"tbl_users]; nested exception is org.hibernate.exception.ConstraintViolationException: could not execute statement\"\n" +
+                                            "}"
+                            ))})
+    })
+    public Error handleException(Exception e, WebRequest request, HttpServletResponse response) {
         Error error = new Error();
         error.setTimestamp(new Date());
         error.setPath(request.getDescription(false).replace("uri=", ""));

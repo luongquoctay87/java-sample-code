@@ -62,3 +62,4 @@
    - [A Quick Guide to Using Keycloak With Spring Boot](https://www.baeldung.com/spring-boot-keycloak)
    - [Getting Started with Spring Boot Data OpenSearch](https://medium.com/level-up-roadmap/getting-started-with-spring-boot-data-opensearch-3acde70492a8)
    - [Docker Opensearch](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/)
+   - [Count the Number of Rows in Spring Data JPA](https://www.baeldung.com/spring-data-jpa-row-count)

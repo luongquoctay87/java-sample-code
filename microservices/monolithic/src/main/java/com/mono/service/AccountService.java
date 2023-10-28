@@ -2,8 +2,8 @@ package com.mono.service;
 
 import com.mono.dto.request.UserCreationRequest;
 import com.mono.dto.request.UserUpdateRequest;
-import com.mono.dto.response.UserListResponse;
 import com.mono.dto.response.UserDetailResponse;
+import com.mono.dto.response.UserListResponse;
 import com.mono.exception.ResourceNotFoundException;
 import com.mono.model.User;
 import com.mono.repository.UserRepository;
@@ -36,6 +36,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
                 .password(passwordEncoder.encode(req.getPassword()))
                 .build();
         User result = userRepository.save(user);
+        log.info("User saved successfully");
         return result.getId();
     }
 
@@ -60,6 +61,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
             }
 
             userRepository.save(user);
+            log.info("User updated successfully");
         }
     }
 
@@ -74,6 +76,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
         User user = get(userId);
         user.setEnabled(status);
         userRepository.delete(user);
+        log.info("User disabled successfully");
     }
 
     /**
@@ -86,6 +89,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
 
         User user = get(userId);
         userRepository.delete(user);
+        log.info("User deleted successfully");
     }
 
     /**
@@ -98,7 +102,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
         log.info("Processing get user detail ...");
 
         User user = get(userId);
-        
+        log.info("Retrieved User successfully");
         return UserDetailResponse.builder()
                 .id(userId)
                 .email(user.getEmail())
@@ -116,8 +120,9 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
     public UserListResponse getAll(int pageNo, int pageSize) {
         log.info("Processing get user list ...");
 
-        if (pageNo > 0) pageNo = pageNo - 1;
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        int page = 0;
+        if (pageNo > 0) page = pageNo - 1;
+        Pageable pageable = PageRequest.of(page, pageSize);
         Page<User> users = userRepository.findAll(pageable);
 
         List<UserDetailResponse> responses = users.getContent().stream().map(x -> UserDetailResponse.builder()
@@ -131,7 +136,7 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
         response.setPageSize(pageSize);
         response.setTotal(users.getTotalElements());
         response.setData(responses);
-
+        log.info("Retrieved users successfully");
         return response;
     }
 
@@ -146,8 +151,9 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
     public UserListResponse search(String username, int pageNo, int pageSize) {
         log.info("Searching user by username={}", username);
 
-        if (pageNo > 0) pageNo = pageNo - 1;
-        Pageable pageable = PageRequest.of(pageNo, pageSize);
+        int page = 0;
+        if (pageNo > 0) page = pageNo - 1;
+        Pageable pageable = PageRequest.of(page, pageSize);
         Page<User> users = userRepository.searchByUsername(username, pageable);
 
         List<UserDetailResponse> responses = users.getContent().stream().map(x -> UserDetailResponse.builder()
@@ -160,6 +166,8 @@ public record AccountService(UserRepository userRepository, PasswordEncoder pass
         response.setPageSize(pageSize);
         response.setTotal(users.getTotalElements());
         response.setData(responses);
+
+        log.info("Retrieved users successfully");
 
         return response;
     }

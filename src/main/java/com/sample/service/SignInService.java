@@ -1,6 +1,5 @@
 package com.sample.service;
 
-import com.amazonaws.services.sns.model.InvalidParameterException;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -8,7 +7,7 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.sample.controller.request.SignInRequest;
 import com.sample.controller.response.TokenResponse;
-import lombok.RequiredArgsConstructor;
+import com.sample.exception.InvalidDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -91,7 +90,7 @@ public class SignInService {
                     .build();
         } catch (JWTVerificationException e) {
             log.error("Generate refresh token was error, message={}", e.getMessage());
-            throw new InvalidParameterException(e.getMessage());
+            throw new InvalidDataException(e.getMessage());
         }
     }
 

@@ -1,4 +1,4 @@
-package com.library.model;
+package com.account.model;
 
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -12,8 +12,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@ToString
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tbl_users")
 public class User {
 
@@ -30,6 +31,9 @@ public class User {
 
     @Column(name = "date_of_birth")
     private String dateOfBirth;
+
+    @Column(name = "gender")
+    private Integer gender;
 
     @Column(name = "phone")
     private String phone;

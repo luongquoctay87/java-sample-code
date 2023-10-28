@@ -8,15 +8,18 @@
         <version>2.7.15</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.microservice</groupId>
     <artifactId>product</artifactId>
     <version>1.0.0</version>
     <name>product</name>
     <description>Product Service - MongoDB</description>
+
     <properties>
         <java.version>17</java.version>
         <springfox.version>3.0.0</springfox.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.springdoc</groupId>

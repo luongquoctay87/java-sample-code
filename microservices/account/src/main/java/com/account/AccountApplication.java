@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@EntityScan("com.library.model")
+//@EntityScan("com.library.model")
 public class AccountApplication {
 
     public static void main(String[] args) {
