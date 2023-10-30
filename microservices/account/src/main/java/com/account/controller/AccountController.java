@@ -3,17 +3,14 @@ package com.account.controller;
 import com.account.dto.request.UserCreationRequest;
 import com.account.dto.request.UserUpdateRequest;
 import com.account.dto.response.UserResponse;
+import com.account.exception.InvalidDataException;
 import com.account.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.ArraySchema;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import java.util.List;
@@ -22,7 +19,7 @@ import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/users")
 @Slf4j(topic = "ACCOUNT-CONTROLLER")
 @Validated
 public class AccountController {
@@ -41,27 +38,42 @@ public class AccountController {
     @PutMapping(path = "/", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
     @ResponseStatus(ACCEPTED)
     public void updateUser(@Valid @RequestBody UserUpdateRequest request) {
-        userService.updateUser(request);
+        try {
+            userService.updateUser(request);
+        } catch (Exception e) {
+            throw new InvalidDataException("Update user unsuccessful, Please try again");
+        }
     }
 
     @Operation(summary = "Delete user", description = "Return no content")
-    @DeleteMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @DeleteMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(NO_CONTENT)
-    public void deleteUser(@PathVariable("id") @Min(1) int id) {
-        userService.deleteUser(id);
+    public void deleteUser(@PathVariable("id") @Min(1) long id) {
+        try {
+            userService.deleteUser(id);
+        } catch (Exception e) {
+            throw new InvalidDataException("Delete user unsuccessful, Please try again");
+        }
     }
 
     @Operation(summary = "Get user detail", description = "Return user detail")
-    @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/{id}", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public UserResponse getUser(@PathVariable("id") @Min(1) int id) {
         return userService.getUser(id);
     }
 
     @Operation(summary = "Get user list", description = "Return list of users")
-    @GetMapping(path = "/", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/list", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public List<UserResponse> getUsers(@RequestParam(required = false) String name) {
+    public List<UserResponse> getUsers() {
         return userService.getUsers();
+    }
+
+    @Operation(summary = "Search user with criteria", description = "Return list of users")
+    @GetMapping(path = "/search-with-criteria", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public List<UserResponse> searchWithCriteria(@RequestParam String... search) {
+        return userService.searchWithCriteria(search);
     }
 }

@@ -1,6 +1,6 @@
 package com.account.dto.response;
 
-import com.account.dto.Address;
+import com.account.dto.AddressDTO;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Builder
 public class UserResponse implements Serializable {
 
-    private int id;
+    private long id;
 
     private String fullName;
 
@@ -18,5 +18,5 @@ public class UserResponse implements Serializable {
 
     private String email;
 
-    private Address address;
+    private AddressDTO addressDTO;
 }

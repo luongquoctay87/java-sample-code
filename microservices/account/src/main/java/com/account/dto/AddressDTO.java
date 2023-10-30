@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Data
 @Builder
-public class Address implements Serializable {
+public class AddressDTO implements Serializable {
     private String street;
     private String city;
     private String state;
