@@ -76,4 +76,11 @@ public class AccountController {
     public List<UserResponse> searchWithCriteria(@RequestParam String... search) {
         return userService.searchWithCriteria(search);
     }
+
+    @Operation(summary = "Search user with specifications", description = "Return list of users")
+    @GetMapping(path = "/search-with-specifications", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public List<UserResponse> searchWithSpecifications(@RequestParam String... search) {
+        return userService.findAllBySpecification(search);
+    }
 }

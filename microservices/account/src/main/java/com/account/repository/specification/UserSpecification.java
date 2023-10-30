@@ -1,6 +1,7 @@
 package com.account.repository.specification;
 
 import com.account.model.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -10,6 +11,7 @@ import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
 @Getter
+@AllArgsConstructor
 public class UserSpecification implements Specification<User> {
 
     private SpecSearchCriteria criteria;

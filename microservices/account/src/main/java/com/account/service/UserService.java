@@ -9,10 +9,15 @@ import com.account.model.User;
 import com.account.repository.SearchRepository;
 import com.account.repository.UserRepository;
 import com.account.repository.criteria.SearchCriteria;
+import com.account.repository.specification.UserSpecificationsBuilder;
 import com.account.util.Constant;
+import com.account.util.SearchOperation;
+import com.google.common.base.Joiner;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import static com.account.util.Constant.Regex.SEARCH_OPERATOR;
+import static com.account.util.SearchOperation.SIMPLE_OPERATION_SET;
 
 @Service
 @Slf4j
@@ -113,6 +119,32 @@ public class UserService {
             }
         }
         List<User> users = searchRepository.searchUserByCriteria(params);
+
+        return users.stream().map(user -> UserResponse.builder()
+                .id(user.getId())
+                .fullName(user.getFirstName() + " " + user.getLastName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .build()
+        ).toList();
+    }
+
+    public List<UserResponse> findAllBySpecification(String ... search) {
+        UserSpecificationsBuilder builder = new UserSpecificationsBuilder();
+        String operationSetExper = Joiner.on("|").join(SIMPLE_OPERATION_SET);
+
+        if (search.length > 0) {
+            Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(.*)(\\p{Punct}?)");
+            for (String s : search) {
+                Matcher matcher = pattern.matcher(s);
+                if (matcher.find()) {
+                    builder.with(matcher.group(1), matcher.group(2), matcher.group(4), matcher.group(3), matcher.group(5));
+                }
+            }
+        }
+
+        Specification<User> spec = builder.build();
+        List<User> users = userRepository.findAll(spec);
 
         return users.stream().map(user -> UserResponse.builder()
                 .id(user.getId())

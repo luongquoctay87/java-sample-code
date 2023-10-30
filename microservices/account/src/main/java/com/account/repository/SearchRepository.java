@@ -22,8 +22,8 @@ public class SearchRepository {
     /**
      * Search user by criteria
      *
-     * @param params    list of filter conditions
-     * @return          list of users
+     * @param params list of filter conditions
+     * @return list of users
      */
     public List<User> searchUserByCriteria(final List<SearchCriteria> params) {
         final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
