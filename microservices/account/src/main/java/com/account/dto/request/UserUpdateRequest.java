@@ -1,10 +1,16 @@
 package com.account.dto.request;
 
-import com.account.dto.AddressDTO;
+import com.account.util.UserStatus;
+import com.account.util.UserType;
+import com.account.util.UserTypeSubset;
+import com.account.validator.ValidateEnum;
+import com.account.validator.ValueOfEnum;
 import lombok.Data;
 
 import javax.validation.constraints.Min;
 import java.io.Serializable;
+
+import static com.account.util.UserType.*;
 
 @Data
 public class UserUpdateRequest implements Serializable {
@@ -15,5 +21,10 @@ public class UserUpdateRequest implements Serializable {
     private String phone;
     private String email;
     private String password;
-    private AddressDTO addressDTO;
+    @ValidateEnum(name = "status", regexp = "ACTIVE|INACTIVE|NONE")
+    private UserStatus status;
+    @UserTypeSubset(anyOf = {SYSADMIN, ADMIN, MANAGER, USER})
+    private UserType userType;
+    @ValueOfEnum(name="type", regexp = "(SYSADMIN | ADMIN | MANAGER | USER)", enumClass = UserType.class)
+    private String type;
 }

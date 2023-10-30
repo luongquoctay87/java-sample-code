@@ -47,15 +47,18 @@ public class User {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "created_date")
+//    @Column(name = "status")
+//    private UserStatus status;
+
+    @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
     @CreationTimestamp
-    private Date createdDate;
+    private Date createdAt;
 
-    @Column(name = "updated_date")
+    @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     @UpdateTimestamp
-    private Date updatedDate;
+    private Date updatedAt;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
     private Set<Address> addresses = new HashSet<>();
