@@ -6,7 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class EnumValidator implements ConstraintValidator<ValidateEnum, Enum<?>> {
+public class EnumNamePatternValidator implements ConstraintValidator<ValidateEnum, Enum<?>> {
     private Pattern pattern;
 
     @Override

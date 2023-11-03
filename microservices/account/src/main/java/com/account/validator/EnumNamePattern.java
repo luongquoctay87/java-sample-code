@@ -13,7 +13,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Documented
 @Constraint(validatedBy = EnumValidator.class)
-public @interface ValidateEnum {
+public @interface EnumNamePattern {
     String name();
     String regexp();
     String message() default "{name} must match {regexp}";
