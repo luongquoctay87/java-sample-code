@@ -21,6 +21,7 @@
    - [Validate input data](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-input-data.md)
    - [Format datetime](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/format-datetime.md)
    - [Validate phone](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-phone.md)
+   - [Validate Enum](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/validator/enum-validation.md)
 
 3. Working with AWS
    - [Working With Dynamodb](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/working-with-aws/working-with-dynamodb.md)
@@ -61,5 +62,5 @@
    - [Spring Boot Tutorial: Step-by-Step Guides](https://howtodoinjava.com/series/spring-boot/)
    - [A Quick Guide to Using Keycloak With Spring Boot](https://www.baeldung.com/spring-boot-keycloak)
    - [Getting Started with Spring Boot Data OpenSearch](https://medium.com/level-up-roadmap/getting-started-with-spring-boot-data-opensearch-3acde70492a8)
-   - [Docker Opensearch](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/)
+   - [Docker Open-search](https://opensearch.org/docs/latest/install-and-configure/install-opensearch/docker/)
    - [Count the Number of Rows in Spring Data JPA](https://www.baeldung.com/spring-data-jpa-row-count)

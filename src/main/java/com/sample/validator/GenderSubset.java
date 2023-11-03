@@ -1,5 +1,7 @@
 package com.sample.validator;
 
+import com.sample.utils.Gender;
+
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.Documented;
@@ -12,11 +14,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = EnumNamePatternValidator.class)
-public @interface EnumNamePattern {
-    String name();
-    String regexp();
-    String message() default "{name} must match {regexp}";
+@Constraint(validatedBy = GenderSubSetValidator.class)
+public @interface GenderSubset {
+    Gender[] anyOf();
+    String message() default "must be any of {anyOf}";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

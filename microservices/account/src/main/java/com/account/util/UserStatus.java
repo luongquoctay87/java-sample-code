@@ -22,19 +22,7 @@ public enum UserStatus {
     NONE("none");
 
     private final String name;
-
-    private static final Map<String, UserStatus> FORMAT_MAP = Stream
-            .of(UserStatus.values())
-            .collect(Collectors.toMap(s -> s.name, Function.identity()));
-
     UserStatus(String name) {
         this.name = name;
-    }
-
-    @JsonCreator // This is the factory method and must be static
-    public static UserStatus fromString(String status) {
-        return Optional
-                .ofNullable(FORMAT_MAP.get(status))
-                .orElseThrow(() -> new IllegalArgumentException(status));
     }
 }

@@ -12,11 +12,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER, TYPE_USE})
 @Retention(RUNTIME)
 @Documented
-@Constraint(validatedBy = EnumNamePatternValidator.class)
-public @interface EnumNamePattern {
-    String name();
-    String regexp();
-    String message() default "{name} must match {regexp}";
+@Constraint(validatedBy = ValueOfEnumValidator.class)
+public @interface ValueOfEnum {
+    String name() default "";
+    String regexp() default "";
+    String message() default "{name} must be any of enum {regexp}";
+    Class<? extends Enum<?>> enumClass();
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }
