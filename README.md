@@ -20,7 +20,7 @@
    - [I18N for API](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/i18n-api-messages.md)
    - [Validate input data](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-input-data.md)
    - [Format datetime](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/format-datetime.md)
-   - [Validate phone](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-phone.md)
+   - [Validate phone](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-phone-by-regex.md)
    - [Validate Enum](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/validator/enum-validation.md)
 
 3. Working with AWS

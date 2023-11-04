@@ -63,10 +63,10 @@ public class GlobalExceptionHandler {
             error.setError("Body is invalid");
             error.setMessages(message);
         } else if (e instanceof MissingServletRequestParameterException) {
-            error.setError("Param is invalid");
+            error.setError("Parameter is invalid");
             error.setMessages(message);
         } else if (e instanceof ConstraintViolationException) {
-            error.setError("Param is invalid");
+            error.setError("Parameter is invalid");
             error.setMessages(message.substring(message.indexOf(" ") + 1));
         } else {
             error.setError("Data is invalid");

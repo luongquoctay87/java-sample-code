@@ -44,12 +44,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/v3/**")
+    public void configure(WebSecurity web) {
+        web.ignoring()
+                .antMatchers("/v3/**")
                 .antMatchers("/actuator/**")
                 .antMatchers("/swagger-ui.html")
                 .antMatchers("/swagger-ui/**")
-                .antMatchers("/v3/api-docs/**");
+                .antMatchers("/v3/api-docs/**")
+                .antMatchers("/validation/**");
 
     }
 
