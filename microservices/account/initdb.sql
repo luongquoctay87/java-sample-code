@@ -6,7 +6,6 @@
 
 CREATE TABLE public.tbl_users (
 	id bigserial NOT NULL,
-	created_date timestamp NULL,
 	date_of_birth varchar(255) NULL,
 	email varchar(255) NULL,
 	first_name varchar(255) NULL,
@@ -14,7 +13,8 @@ CREATE TABLE public.tbl_users (
 	last_name varchar(255) NULL,
 	"password" varchar(255) NULL,
 	phone varchar(255) NULL,
-	updated_date timestamp NULL,
+	updated_at timestamp NULL,
+    created_at timestamp NULL,
 	username varchar(255) NULL,
 	CONSTRAINT tbl_users_pkey PRIMARY KEY (id)
 );

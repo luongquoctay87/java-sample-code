@@ -3,7 +3,7 @@ package com.account.dto.request;
 import com.account.util.UserStatus;
 import com.account.util.UserType;
 import com.account.util.UserTypeSubset;
-import com.account.validator.ValidateEnum;
+import com.account.validator.EnumNamePattern;
 import com.account.validator.ValueOfEnum;
 import lombok.Data;
 
@@ -21,7 +21,7 @@ public class UserUpdateRequest implements Serializable {
     private String phone;
     private String email;
     private String password;
-    @ValidateEnum(name = "status", regexp = "ACTIVE|INACTIVE|NONE")
+    @EnumNamePattern(name = "status", regexp = "ACTIVE|INACTIVE|NONE")
     private UserStatus status;
     @UserTypeSubset(anyOf = {SYSADMIN, ADMIN, MANAGER, USER})
     private UserType userType;

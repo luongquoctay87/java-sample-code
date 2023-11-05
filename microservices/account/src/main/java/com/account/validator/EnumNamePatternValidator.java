@@ -6,11 +6,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-public class EnumNamePatternValidator implements ConstraintValidator<ValidateEnum, Enum<?>> {
+public class EnumNamePatternValidator implements ConstraintValidator<EnumNamePattern, Enum<?>> {
     private Pattern pattern;
 
     @Override
-    public void initialize(ValidateEnum annotation) {
+    public void initialize(EnumNamePattern annotation) {
         try {
             pattern = Pattern.compile(annotation.regexp());
         } catch (PatternSyntaxException e) {

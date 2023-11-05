@@ -1,17 +1,20 @@
 package com.account.dto.response;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import java.io.Serializable;
 
-@Data
+@Getter
+@Setter
 @Builder
+@AllArgsConstructor
 public class UserDetailResponse implements Serializable {
 
     private long id;
 
-    private String fullName;
+    private String firstName;
+
+    private String lastName;
 
     private String phone;
 

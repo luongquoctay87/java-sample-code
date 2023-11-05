@@ -18,8 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +40,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SearchRepository searchRepository;
 
+    @Transactional(rollbackFor = Exception.class)
     public long addUser(UserCreationRequest req) {
         log.info("Processing add user ...");
 
@@ -73,6 +74,7 @@ public class UserService {
         return result.getId();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserUpdateRequest req) {
         log.info("Processing update user ...");
 
@@ -83,6 +85,7 @@ public class UserService {
 
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public void deleteUser(long id) {
         log.info("Processing delete user ...");
         userRepository.deleteById(id);
@@ -95,7 +98,7 @@ public class UserService {
 
         return UserDetailResponse.builder()
                 .id(userId)
-                .fullName(user.getFirstName() + " " + user.getLastName())
+                .firstName(user.getFirstName() + " " + user.getLastName())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .build();
@@ -113,7 +116,7 @@ public class UserService {
 
         return users.stream().map(user -> UserDetailResponse.builder()
                 .id(user.getId())
-                .fullName(user.getFirstName() + " " + user.getLastName())
+                .firstName(user.getFirstName() + " " + user.getLastName())
                 .email(user.getEmail())
                 .phone(user.getPhone())
                 .build()
@@ -121,14 +124,15 @@ public class UserService {
     }
 
     /**
-     * Get user list has sorted and paged
-     * @param pageNo page number
+     * Get user list has been sorted and paged
+     *
+     * @param pageNo   page number
      * @param pageSize size of page
-     * @param sort sort by fields
+     * @param sort     sort by fields
      * @return list of users
      */
     public UserListResponse getUsers(int pageNo, int pageSize, String... sort) {
-        log.info("Processing get user list with pageable and sorting");
+        log.info("Getting user list with pageable and sorting");
 
         int currentPage = pageNo;
         if (pageNo > 0) currentPage = pageNo - 1;
@@ -148,26 +152,18 @@ public class UserService {
         }
 
         Page<User> users = userRepository.findAll(PageRequest.of(currentPage, pageSize, Sort.by(sorts)));
-        int totalPage = users.getTotalPages();
 
-
-        List<UserDetailResponse> userDetailResponses = users.stream().map(user -> UserDetailResponse.builder()
-                .id(user.getId())
-                .fullName(user.getFirstName() + " " + user.getLastName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .build()
-        ).toList();
-
-        return UserListResponse.builder()
-                .users(userDetailResponses)
-                .pageNo(pageNo)
-                .pageSize(pageSize)
-                .totalPage(totalPage)
-                .build();
+        return toUserList(users);
     }
 
-    public List<UserDetailResponse> searchWithCriteria(String... search) {
+    /**
+     * Get user list has been page, sorted and filtered.
+     *
+     * @param pageable includes page, size and sort
+     * @param search   array of filters
+     * @return list of users
+     */
+    public UserListResponse getUsersByCriteria(Pageable pageable, String... search) {
         List<SearchCriteria> params = new ArrayList<>();
 
         if (search.length > 0) {
@@ -179,23 +175,25 @@ public class UserService {
                 }
             }
         }
-        List<User> users = searchRepository.searchUserByCriteria(params);
 
-        return users.stream().map(user -> UserDetailResponse.builder()
-                .id(user.getId())
-                .fullName(user.getFirstName() + " " + user.getLastName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .build()
-        ).toList();
+        Page<User> users = searchRepository.findAllUsersByCriteria(pageable, params);
+
+        return toUserList(users);
     }
 
-    public List<UserDetailResponse> findAllBySpecification(String... search) {
+    /**
+     * Get user list by specifications
+     *
+     * @param pageable includes page, size and sort
+     * @param search   array of filters
+     * @return list of users
+     */
+    public UserListResponse getUsersBySpecifications(Pageable pageable, String... search) {
         UserSpecificationsBuilder builder = new UserSpecificationsBuilder();
-        String operationSetExper = Joiner.on("|").join(SIMPLE_OPERATION_SET);
+        String operations = Joiner.on("|").join(SIMPLE_OPERATION_SET);
 
         if (search.length > 0) {
-            Pattern pattern = Pattern.compile("(\\w+?)(" + operationSetExper + ")(\\p{Punct}?)(.*)(\\p{Punct}?)");
+            Pattern pattern = Pattern.compile("(\\w+?)(" + operations + ")(\\p{Punct}?)(.*)(\\p{Punct}?)");
             for (String s : search) {
                 Matcher matcher = pattern.matcher(s);
                 if (matcher.find()) {
@@ -204,16 +202,28 @@ public class UserService {
             }
         }
 
-        Specification<User> spec = builder.build();
-        List<User> users = userRepository.findAll(spec);
+        Page<User> users = userRepository.findAll(builder.build(), pageable);
 
-        return users.stream().map(user -> UserDetailResponse.builder()
-                .id(user.getId())
-                .fullName(user.getFirstName() + " " + user.getLastName())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .build()
-        ).toList();
+        return toUserList(users);
+    }
+
+    /**
+     * Get list of users by
+     * @param firstName
+     * @param lastName
+     * @param gender
+     * @param pageNo
+     * @param pageSize
+     * @return
+     */
+    public UserListResponse getUsersByCustomizeQuery(String firstName, String lastName, Integer gender, int pageNo, int pageSize) {
+        Page<UserDetailResponse> users = searchRepository.findAllUsersByCustomizeQuery(firstName, lastName, gender, pageNo, pageSize);
+        return UserListResponse.builder()
+                .users(users.stream().toList())
+                .pageNo(users.getNumber())
+                .pageSize(users.getSize())
+                .totalPage(users.getTotalPages())
+                .build();
     }
 
     private User get(long id) {
@@ -221,4 +231,20 @@ public class UserService {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found user"));
     }
 
+    private UserListResponse toUserList(Page<User> users) {
+        List<UserDetailResponse> list = users.stream().map(user -> UserDetailResponse.builder()
+                .id(user.getId())
+                .firstName(user.getFirstName() + " " + user.getLastName())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .build()
+        ).toList();
+
+        return UserListResponse.builder()
+                .users(list)
+                .pageNo(users.getNumber())
+                .pageSize(users.getSize())
+                .totalPage(users.getTotalPages())
+                .build();
+    }
 }

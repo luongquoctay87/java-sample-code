@@ -79,14 +79,14 @@ public class AccountController {
         return userService.getUser(id);
     }
 
-    @Operation(summary = "Get user list has paged", description = "Return list of users")
+    @Operation(summary = "Get user list has been paged", description = "Return list of users")
     @GetMapping(path = "/list", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public List<UserDetailResponse> getUsers(Pageable pageable) {
         return userService.getUsers(pageable);
     }
 
-    @Operation(summary = "Get user list has sorted and paged", description = "Return list of users")
+    @Operation(summary = "Get user list has been sorted and paged", description = "Return list of users")
     @GetMapping(path = "/list-sorted-paged", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
     public UserListResponse getUsers(@RequestParam(defaultValue = "0") int pageNo,
@@ -98,14 +98,25 @@ public class AccountController {
     @Operation(summary = "Search user with criteria", description = "Return list of users")
     @GetMapping(path = "/search-with-criteria", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public List<UserDetailResponse> searchWithCriteria(@RequestParam String... search) {
-        return userService.searchWithCriteria(search);
+    public UserListResponse searchWithCriteria(Pageable pageable, @RequestParam String... search) {
+        return userService.getUsersByCriteria(pageable, search);
     }
 
     @Operation(summary = "Search user with specifications", description = "Return list of users")
     @GetMapping(path = "/search-with-specifications", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public List<UserDetailResponse> searchWithSpecifications(@RequestParam String... search) {
-        return userService.findAllBySpecification(search);
+    public UserListResponse searchWithSpecifications(Pageable pageable, @RequestParam String... search) {
+        return userService.getUsersBySpecifications(pageable, search);
+    }
+
+    @Operation(summary = "Get user list has been sorted and paged by customize query", description = "Return list of users")
+    @GetMapping(path = "/list-sorted-paged-by-customize-query", produces = APPLICATION_JSON_VALUE)
+    @ResponseStatus(OK)
+    public UserListResponse getUsersByCustomizeQuery(@RequestParam(required = false) String firstName,
+                                                  @RequestParam(required = false) String lastName,
+                                                  @RequestParam(required = false) Integer gender,
+                                                  @RequestParam(defaultValue = "0") int pageNo,
+                                                  @RequestParam(defaultValue = "20") int pageSize                                                  ) {
+        return userService.getUsersByCustomizeQuery(firstName, lastName, gender, pageNo, pageSize);
     }
 }
