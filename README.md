@@ -22,6 +22,10 @@
    - [Format datetime](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/format-datetime.md)
    - [Validate phone](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/restful-api/validate-phone-by-regex.md)
    - [Validate Enum](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/validator/enum-validation.md)
+   - [CRUD, Search, Sort and Paging by JPARepository](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/spring-data-jpa/crud-seach-sort-paging.md)
+   - [Search, Sort and Paging by JPACriteria](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/spring-data-jpa/search-sort-paging-by-criteria.md)
+   - [Search, Sort and Paging by JPASpecification](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/spring-data-jpa/search-sort-paging-by-specification.md)
+   - [Search, Sort and Paging by Customize Query](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/spring-data-jpa/search-sort-paging-by-customize-query.md)
 
 3. Working with AWS
    - [Working With Dynamodb](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/working-with-aws/working-with-dynamodb.md)

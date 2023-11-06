@@ -230,3 +230,9 @@ public class AccountController {
 ```
 curl --location 'http://localhost:7750/users/search-with-criteria?search=firstName%3AT%C3%A2y%2ClastName%3AL%C6%B0%C6%A1ng%20Qu%E1%BB%91c&page=0&size=20&sort=firstName%3Aasc'
 ```
+
+
+---
+***Source Reference:***
+- [REST Query Language with Spring and JPA Criteria](https://www.baeldung.com/rest-search-language-spring-jpa-criteria)
+- [Advanced Search and Filtering using Spring Data JPA Specification and Criteria API](https://medium.com/@cmmapada/advanced-search-and-filtering-using-spring-data-jpa-specification-and-criteria-api-b6e8f891f2bf)

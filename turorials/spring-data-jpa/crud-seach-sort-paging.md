@@ -360,3 +360,8 @@ public class AccountController {
     }
 }
 ```
+
+---
+***Source Reference:***
+- [Spring Boot Pagination & Filter example | Spring JPA, Pageable](https://www.bezkoder.com/spring-boot-pagination-filter-jpa-pageable/)
+- [Pagination and Sorting using Spring Data JPA](https://www.baeldung.com/spring-data-jpa-pagination-sorting)
