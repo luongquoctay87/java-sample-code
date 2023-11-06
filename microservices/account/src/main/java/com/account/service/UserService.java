@@ -40,6 +40,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final SearchRepository searchRepository;
 
+    /**
+     * Create new user
+     *
+     * @param req
+     * @return
+     */
     @Transactional(rollbackFor = Exception.class)
     public long addUser(UserCreationRequest req) {
         log.info("Processing add user ...");
@@ -74,17 +80,32 @@ public class UserService {
         return result.getId();
     }
 
+    /**
+     * Update a user
+     *
+     * @param req
+     */
     @Transactional(rollbackFor = Exception.class)
     public void updateUser(UserUpdateRequest req) {
         log.info("Processing update user ...");
 
     }
 
+    /**
+     * Change user active or inactive
+     *
+     * @param id
+     * @param status
+     */
     public void changeStatus(long id, String status) {
         log.info("Changing status user, status={}", status);
 
     }
 
+    /**
+     * Delete user permanently
+     * @param id
+     */
     @Transactional(rollbackFor = Exception.class)
     public void deleteUser(long id) {
         log.info("Processing delete user ...");
@@ -226,11 +247,23 @@ public class UserService {
                 .build();
     }
 
+    /**
+     * Get user by ID
+     *
+     * @param id
+     * @return
+     */
     private User get(long id) {
         log.info("Retrieving User from database");
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Not found user"));
     }
 
+    /**
+     * Covert to UserListResponse
+     *
+     * @param users
+     * @return
+     */
     private UserListResponse toUserList(Page<User> users) {
         List<UserDetailResponse> list = users.stream().map(user -> UserDetailResponse.builder()
                 .id(user.getId())
