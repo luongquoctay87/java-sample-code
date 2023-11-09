@@ -12,7 +12,7 @@ springdoc:
 openapi:
   service:
     api-docs: account-service
-    server: http://localhost:7750
+    server: http://10.96.1.2:7750
     title: Account Service
     version: 1.0
 

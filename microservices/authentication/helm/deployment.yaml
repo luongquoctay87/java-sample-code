@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment # Kubernetes' resource kind we are creating
+metadata:
+  name: authz
+spec:
+  selector:
+    matchLabels:
+      app: authz
+  replicas: 1 # Number of replicas that will be created for this deployment
+  template:
+    metadata:
+      labels:
+        app: authz
+    spec:
+      containers:
+        - name: authz
+          image: authz:1.0
+          # Image that will be used to containers in the cluster
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 7749
+# The port that the container is running on in the cluster
