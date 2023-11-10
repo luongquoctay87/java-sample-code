@@ -1,0 +1,46 @@
+#apiVersion: apps/v1
+#kind: StatefulSet
+#metadata:
+#  name: authz-static
+#spec:
+#  serviceName: "authz"
+#  replicas: 1
+#  selector:
+#    matchLabels:
+#      app: authz
+#  template:
+#    metadata:
+#      labels:
+#        app: authz
+#    spec:
+#      containers:
+#        - name: authz
+#          image: authz:1.0
+#          imagePullPolicy: IfNotPresent
+#          ports:
+#            - containerPort: 7749
+#              protocol: TCP
+#              name: authz-static-0
+#            - containerPort: 5005
+#              protocol: TCP
+#              name: debug-port
+#          env:
+#            - name: JAVA_TOOL_OPTIONS
+#              value: '-Xdebug -agentlib:jdwp=transport=dt_socket,address=0.0.0.0:5005,server=y,suspend=n'
+#---
+#apiVersion: v1
+#kind: Service
+#metadata:
+#  name: authz-svc
+#  labels:
+#    app: authz-svc
+#spec:
+#  clusterIP: 10.96.254.100
+#  ports:
+#    - port: 7749
+#      targetPort: 7749
+#      protocol: TCP
+#      name: http
+#  selector:
+#    app: authz
+#  type: NodePort

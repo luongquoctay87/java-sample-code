@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: demo-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+
+spec:
+  rules:
+    - host: k8s.springboot.demo
+      http:
+        paths:
+          - path: /.*
+            pathType: Prefix
+            backend:
+              service:
+                name: kafka-kubernetes-demo-service
+                port:
+                  number: 7749

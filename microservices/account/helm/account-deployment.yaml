@@ -20,3 +20,16 @@ spec:
           ports:
             - containerPort: 7750
 # The port that the container is running on in the cluster
+---
+apiVersion: v1 # Kubernetes API version
+kind: Service # Kubernetes' resource kind we are creating
+metadata: # Metadata of the resource kind we are creating
+  name: account-svc
+spec:
+  selector:
+    app: account
+  ports:
+    - protocol: "TCP"
+      port: 7750 # The port that the service is running on in the cluster
+      targetPort: 7750 # The port exposed by the service
+  type: ClusterIP # type of the service.

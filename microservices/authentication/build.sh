@@ -5,14 +5,20 @@ eval $(minikube -p minikube docker-env)
 minikube status
 docker images
 
-# build docker images
+# Build docker images
 mvn clean package
 docker build -t authz:1.0 .
 
 # Deploy application
-kubectl apply -f helm/.
-#kubectl port-forward service/authz-svc 7749:7749
+kubectl apply -f helm/debug.yaml
 
-#Open browser:
+sleep 2
+
+# Set debugger
+osascript -e 'tell app "Terminal" to do script "kubectl port-forward authz-static-0 5005:5005"'
+
+## Publish to browser:"
+kubectl port-forward service/authz-svc 7749:7749
+
 # http://localhost:7749/swagger-ui/index.html
 
