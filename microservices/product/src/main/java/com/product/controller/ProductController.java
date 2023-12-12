@@ -5,8 +5,8 @@ import com.product.dto.request.ProductUpdateRequest;
 import com.product.dto.response.ProductResponse;
 import com.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,14 +16,14 @@ import java.util.List;
 import static org.springframework.http.HttpStatus.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
-@RestController
-@RequestMapping("/product")
-@Slf4j(topic = "PRODUCT")
 @Validated
+@RestController
+@RequiredArgsConstructor
+@RequestMapping("/product")
+@Slf4j(topic = "PRODUCT-CONTROLLER")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;
+    private final ProductService productService;
 
     @Operation(summary = "Add new user", description = "Return product ID")
     @PostMapping(path = "/", produces = APPLICATION_JSON_VALUE, consumes = APPLICATION_JSON_VALUE)
@@ -56,7 +56,7 @@ public class ProductController {
     @Operation(summary = "Get product list", description = "Return list of products")
     @GetMapping(path = "/", produces = APPLICATION_JSON_VALUE)
     @ResponseStatus(OK)
-    public List<ProductResponse> getProducts(@RequestParam(required = false) String name) {
-        return productService.getProducts();
+    public List<ProductResponse> getProducts(@RequestParam(defaultValue = "true") boolean status) {
+        return productService.getProducts(status);
     }
 }

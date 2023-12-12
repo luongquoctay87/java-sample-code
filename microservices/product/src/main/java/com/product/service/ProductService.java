@@ -16,6 +16,11 @@ import java.util.List;
 @Slf4j
 public record ProductService(ProductRepository productRepository) {
 
+    /**
+     * Add new product
+     * @param req
+     * @return
+     */
     public String addProduct(ProductCreationRequest req) {
         log.info("Saving product ...");
 
@@ -31,6 +36,10 @@ public record ProductService(ProductRepository productRepository) {
         return response.getId();
     }
 
+    /**
+     * Update product
+     * @param req
+     */
     public void updateProduct(ProductUpdateRequest req) {
         log.info("Updating user ...");
 
@@ -55,12 +64,21 @@ public record ProductService(ProductRepository productRepository) {
     }
 
 
+    /**
+     * Delete product
+     * @param id
+     */
     public void deleteProduct(String id) {
         log.info("Deleting user ...");
         productRepository.delete(get(id));
         log.info("Product has deleted successful");
     }
 
+    /**
+     * Get product by id
+     * @param id
+     * @return product
+     */
     public ProductResponse getProduct(String id) {
         log.info("Getting user detail ...");
 
@@ -75,10 +93,15 @@ public record ProductService(ProductRepository productRepository) {
                 .build();
     }
 
-    public List<ProductResponse> getProducts() {
+    /**
+     * Get list of product
+     *
+     * @return product list
+     */
+    public List<ProductResponse> getProducts(boolean status) {
         log.info("Getting user list ...");
 
-        List<Product> responses = productRepository.findAll();
+        List<Product> responses = productRepository.findByDisplayed(status);
 
         return responses.stream().map(product -> ProductResponse.builder()
                 .id(product.getId())

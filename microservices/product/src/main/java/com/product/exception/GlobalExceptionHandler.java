@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
      *
      * @param e
      * @param request
-     * @return
+     * @return 400
      */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(BAD_REQUEST)
@@ -44,7 +44,7 @@ public class GlobalExceptionHandler {
      * Handle invalid data
      * @param e
      * @param request
-     * @return
+     * @return 400
      */
     @ExceptionHandler(InvalidDataException.class)
     @ResponseStatus(BAD_REQUEST)
@@ -64,7 +64,7 @@ public class GlobalExceptionHandler {
      *
      * @param e
      * @param request
-     * @return
+     * @return 404
      */
     @ExceptionHandler(ResourceNotFoundException.class)
     @ResponseStatus(NOT_FOUND)
@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
      *
      * @param e
      * @param request
-     * @return error
+     * @return 500
      */
     @ExceptionHandler(Exception.class)
     @ResponseStatus(INTERNAL_SERVER_ERROR)
