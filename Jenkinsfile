@@ -5,8 +5,7 @@ pipeline {
             steps {
                 sh 'echo "Hello World"'
                 sh '''
-                    echo "==================> "
-                    mvn clean install
+                    echo '==================>'
                     pwd
                 '''
             }
