@@ -50,6 +50,7 @@
    - [CORS configuration](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/common-functions/cors-configuration.md)
    - [Setting Request Prefilter](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/common-functions/request-prefilter.md)
    - [API document](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/common-functions/api-document.md)
+   - [Config logging for ELK](https://github.com/luongquoctay87/java-sample-code/blob/master/turorials/logging/config-logging.md)
    - Push Notification With OneSignal
    - Single Sign On with KeyCloak
 
