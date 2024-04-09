@@ -2,7 +2,7 @@
 
 ### 1. CORS for single application
 - As an alternative to other methods presented above, Spring Framework also provides a CorsFilter. 
-In that case, instead of using @CrossOrigin or WebMvcConfigurer#addCorsMappings(CorsRegistry), 
+In that case, instead of using @CrossOrigin or WebMvcConfigurer# addCorsMappings(CorsRegistry), 
 you can for example declare the filter as following in your Spring Boot application
 ```
 @Configuration
@@ -27,13 +27,12 @@ public class AppConfig {
 - Enabling CORS for the whole application is as simple as:
 ```
 @Configuration
-@EnableWebMvc
-public class AppConfig extends WebMvcConfigurerAdapter {
+public class AppConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addCorsMappings(CorsRegistry registry) {
-		registry.addMapping("/**");
-	}
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**");
+    }
 }
 ```
 
@@ -44,7 +43,7 @@ public class AppConfig {
 
     @Bean
     public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
+        return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**");
